@@ -6,10 +6,12 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 export const RouterApp = () => {
 	return (
 		<Router>
-			<Switch>
-				<Route exact path={'/'} component={CalendarScreen} />
-				<Route exact path={'/login'} component={LoginScreen} />
-			</Switch>
+			<div>
+				<Switch>
+					<Route exact path="/" component={CalendarScreen} />
+					<Route exact path="/login" component={LoginScreen} />
+				</Switch>
+			</div>
 		</Router>
 	);
 };
