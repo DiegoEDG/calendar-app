@@ -128,12 +128,9 @@ export const CalendarModal = () => {
 						value={notes}
 						onChange={handleInputChange}
 					></textarea>
-					<small id="emailHelp" className="form-text text-muted">
-						Información adicional
-					</small>
 				</div>
 
-				<button type="submit" className="btn btn-outline-primary btn-block">
+				<button type="submit" className="btn btn-outline-primary btn-block mt-2">
 					<i className="far fa-save"></i>
 					<span> Guardar</span>
 				</button>
