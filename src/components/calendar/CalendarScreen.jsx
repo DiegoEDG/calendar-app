@@ -9,26 +9,14 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { setActiveEventAction } from '../../actions/events';
 import { AddNewFab } from '../ui/AddNewFab';
+import { useSelector } from 'react-redux';
 
 const localizer = momentLocalizer(moment);
-
-const events = [
-	{
-		title: 'Cumpleaños',
-		start: moment().toDate(),
-		end: moment().add(2, 'hours').toDate(),
-		bgcolor: '#fafafa',
-		notes: 'Comprar el pastel',
-		user: {
-			_id: '123',
-			name: 'Enrique'
-		}
-	}
-];
 
 export const CalendarScreen = () => {
 	const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
 	const dispatch = useDispatch();
+	const { events } = useSelector((state) => state.event);
 
 	const onDoubleClick = (e) => {
 		dispatch(uiOpenModalAction());

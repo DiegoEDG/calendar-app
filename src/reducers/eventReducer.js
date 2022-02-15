@@ -20,16 +20,28 @@ const initialState = {
 
 export const eventReducer = (state = initialState, action) => {
 	switch (action.type) {
-		// case types.eventNewEvent:
-		// 	return {
-		// 		...state,
-		// 		events: [...events, action.payload]
-		// 	};
+		case types.eventNewEvent:
+			return {
+				...state,
+				events: [action.payload, ...state.events]
+			};
+
+		case types.eventUpdated:
+			return {
+				...state,
+				events: state.events.map((event) => (event.id === action.payload.id ? action.payload : event))
+			};
 
 		case types.eventSetActive:
 			return {
 				...state,
 				activeEvent: action.payload
+			};
+
+		case types.eventClearActive:
+			return {
+				...state,
+				activeEvent: null
 			};
 
 		default:

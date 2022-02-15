@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { uiCloseModalAction } from '../../actions/ui';
+import { addNewEventAction, clearActiveEventAction, updateEventAction } from '../../actions/events';
 
 const customStyles = {
 	content: {
@@ -23,19 +24,30 @@ Modal.setAppElement('#root');
 const initialDate = moment().minutes(0).seconds(0).add(1, 'hours');
 const finalDate = moment().clone(initialDate).add(1, 'day');
 
+const initialEvent = {
+	title: '',
+	notes: '',
+	start: initialDate.toDate(),
+	end: finalDate.toDate()
+};
+
 export const CalendarModal = () => {
 	const [dateStart, setDateStart] = useState(initialDate.toDate());
 	const [dateEnd, setDateEnd] = useState(finalDate.toDate());
 	const [isTitleValid, setIsTitleValid] = useState(true);
-	const [event, setEvent] = useState({
-		title: '',
-		notes: '',
-		start: initialDate.toDate(),
-		end: finalDate.toDate()
-	});
+	const [event, setEvent] = useState(initialEvent);
 	const dispatch = useDispatch();
 	const { isModalOpen } = useSelector((state) => state.ui);
+	const { activeEvent } = useSelector((state) => state.event);
 	const { title, notes, start, end } = event;
+
+	useEffect(() => {
+		if (activeEvent) {
+			setEvent(activeEvent);
+		} else {
+			setEvent(initialEvent);
+		}
+	}, [activeEvent]);
 
 	const handleInputChange = ({ target }) => {
 		setEvent({
@@ -58,13 +70,25 @@ export const CalendarModal = () => {
 			setIsTitleValid(false);
 			return;
 		}
-		console.log(event);
-		setIsTitleValid(true);
+
+		if (activeEvent) {
+			dispatch(updateEventAction(event));
+		} else {
+			event.id = new Date().getTime();
+			event.user = {
+				_id: '321',
+				name: 'Diego'
+			};
+			dispatch(addNewEventAction(event));
+			setIsTitleValid(true);
+		}
 		closeModal();
 	};
 
 	const closeModal = () => {
 		dispatch(uiCloseModalAction());
+		dispatch(clearActiveEventAction());
+		setEvent(initialEvent);
 	};
 
 	const startDateChange = (e) => {
