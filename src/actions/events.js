@@ -18,3 +18,7 @@ export const updateEventAction = (event) => ({
 	type: types.eventUpdated,
 	payload: event
 });
+
+export const deleteEventAction = () => ({
+	type: types.eventDeleted
+});

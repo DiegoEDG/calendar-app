@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { uiCloseModalAction } from '../../actions/ui';
-import { addNewEventAction, clearActiveEventAction, updateEventAction } from '../../actions/events';
+import { addNewEventAction, clearActiveEventAction, deleteEventAction, updateEventAction } from '../../actions/events';
 
 const customStyles = {
 	content: {
@@ -82,6 +82,11 @@ export const CalendarModal = () => {
 			dispatch(addNewEventAction(event));
 			setIsTitleValid(true);
 		}
+		closeModal();
+	};
+
+	const handleDelete = () => {
+		dispatch(deleteEventAction());
 		closeModal();
 	};
 
@@ -162,6 +167,12 @@ export const CalendarModal = () => {
 					<i className="far fa-save"></i>
 					<span> Guardar</span>
 				</button>
+				{activeEvent && (
+					<button type="button" className="btn btn-outline-danger btn-block mt-2 mx-2" onClick={handleDelete}>
+						<i className="fas fa-trash"></i>
+						<span> Eliminar</span>
+					</button>
+				)}
 			</form>
 		</Modal>
 	);

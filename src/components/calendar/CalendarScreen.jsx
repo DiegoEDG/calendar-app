@@ -25,9 +25,12 @@ export const CalendarScreen = () => {
 		dispatch(setActiveEventAction(e));
 	};
 	const onViewEvent = (e) => {
-		console.log(e);
 		setLastView(e);
 		localStorage.setItem('lastView', e);
+	};
+
+	const onSelectSlot = (e) => {
+		console.log(e);
 	};
 
 	const eventStyleGetter = (event, start, end, isSelected) => {
@@ -55,6 +58,8 @@ export const CalendarScreen = () => {
 				onDoubleClickEvent={onDoubleClick}
 				onView={onViewEvent}
 				onSelectEvent={onSelectEvent}
+				onSelectSlot={onSelectSlot}
+				selectable={true}
 				view={lastView}
 			/>
 			<CalendarModal />
