@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navbar } from '../ui/Navbar';
 import { Event } from './Event';
 import { CalendarModal } from './CalendarModal';
@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { setActiveEventAction } from '../../actions/events';
 import { AddNewFab } from '../ui/AddNewFab';
-import { useSelector } from 'react-redux';
+import { calendarSlotSelectedAction } from '../../actions/calendar';
 
 const localizer = momentLocalizer(moment);
 
@@ -30,6 +30,8 @@ export const CalendarScreen = () => {
 	};
 
 	const onSelectSlot = (e) => {
+		dispatch(calendarSlotSelectedAction(e));
+		dispatch(uiOpenModalAction());
 		console.log(e);
 	};
 

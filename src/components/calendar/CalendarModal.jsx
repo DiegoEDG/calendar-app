@@ -3,8 +3,7 @@ import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModalAction } from '../../actions/ui';
 import { addNewEventAction, clearActiveEventAction, deleteEventAction, updateEventAction } from '../../actions/events';
 
@@ -27,18 +26,19 @@ const finalDate = moment().clone(initialDate).add(1, 'day');
 const initialEvent = {
 	title: '',
 	notes: '',
-	start: initialDate.toDate(),
-	end: finalDate.toDate()
+	start: '',
+	end: ''
 };
 
 export const CalendarModal = () => {
-	const [dateStart, setDateStart] = useState(initialDate.toDate());
-	const [dateEnd, setDateEnd] = useState(finalDate.toDate());
+	const [dateStart, setDateStart] = useState('');
+	const [dateEnd, setDateEnd] = useState('');
 	const [isTitleValid, setIsTitleValid] = useState(true);
 	const [event, setEvent] = useState(initialEvent);
 	const dispatch = useDispatch();
 	const { isModalOpen } = useSelector((state) => state.ui);
 	const { activeEvent } = useSelector((state) => state.event);
+	const { slotSelected } = useSelector((state) => state.calendar);
 	const { title, notes, start, end } = event;
 
 	useEffect(() => {
@@ -48,6 +48,18 @@ export const CalendarModal = () => {
 			setEvent(initialEvent);
 		}
 	}, [activeEvent]);
+
+	useEffect(() => {
+		if (slotSelected) {
+			setDateStart(slotSelected.start);
+			setDateEnd(slotSelected.end);
+			setEvent({
+				...event,
+				start: dateStart,
+				end: dateEnd
+			});
+		}
+	}, [slotSelected]);
 
 	const handleInputChange = ({ target }) => {
 		setEvent({
@@ -126,12 +138,12 @@ export const CalendarModal = () => {
 			<form className="container" onSubmit={handleSubmit}>
 				<div className="form-group">
 					<label>Fecha y hora inicio</label>
-					<DateTimePicker className="form-control" onChange={startDateChange} value={start} />
+					<DateTimePicker className="form-control" onChange={startDateChange} value={dateStart} />
 				</div>
 
 				<div className="form-group">
 					<label>Fecha y hora fin</label>
-					<DateTimePicker className="form-control" onChange={endDateChange} value={end} minDate={dateStart} />
+					<DateTimePicker className="form-control" onChange={endDateChange} value={dateEnd} minDate={dateStart} />
 				</div>
 
 				<hr />

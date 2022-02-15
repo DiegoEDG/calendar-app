@@ -1,11 +1,13 @@
 export const types = {
-	// Modal actions
+	// Modal Actions
 	uiOpenModal: '[UI] Open Modal',
 	uiCloseModal: '[UI] Close Modal',
-	// Events actions
+	// Events Actions
 	eventNewEvent: '[EVENT] New Event',
 	eventSetActive: '[EVENT] Active Event',
 	eventClearActive: '[EVENT] Clear Active Event',
 	eventUpdated: '[EVENT] Event Updated',
-	eventDeleted: '[EVENT] Event Deleted'
+	eventDeleted: '[EVENT] Event Deleted',
+	// Calendar Actions
+	calendarSlotSelected: '[CALENDAR] Slot Selected'
 };
